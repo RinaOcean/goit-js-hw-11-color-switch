@@ -11,25 +11,35 @@ const bodyRef = document.querySelector('body');
 const startRef = document.querySelector('[data-action="start"]');
 const stopRef = document.querySelector('[data-action="stop"]');
 
-let intervalId = null;
+const colorChanger = {
+  intervalId: null,
+  isActive: false,
 
-startRef.addEventListener('click', startColorChange);
+  start() {
+    if (this.isActive) {
+      return;
+    }
 
-stopRef.addEventListener('click', stopColorChange);
+    this.isActive = true;
+    this.intervalId = setInterval(() => {
+      ColorChange();
+    }, 1000);
+  },
+
+  stop() {
+    clearInterval(this.intervalId);
+    this.isActive = false;
+  },
+};
+
+startRef.addEventListener('click', colorChanger.start.bind(colorChanger));
+stopRef.addEventListener('click', colorChanger.stop.bind(colorChanger));
 
 const randomIntegerFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-function startColorChange() {
-  intervalId = setInterval(() => {
-    bodyRef.style.backgroundColor =
-      colors[randomIntegerFromInterval(0, colors.length - 1)];
-  }, 1000);
-  startRef.removeEventListener('click', startColorChange);
-}
-
-function stopColorChange() {
-  clearInterval(intervalId);
-  startRef.addEventListener('click', startColorChange);
+function ColorChange() {
+  return (bodyRef.style.backgroundColor =
+    colors[randomIntegerFromInterval(0, colors.length - 1)]);
 }
