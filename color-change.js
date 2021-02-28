@@ -16,11 +16,10 @@ const colorChanger = {
   isActive: false,
 
   start() {
-    if (this.isActive) {
+    if (startRef.hasAttribute('disabled')) {
       return;
     }
-
-    this.isActive = true;
+    startRef.setAttribute('disabled', 'true');
     this.intervalId = setInterval(() => {
       ColorChange();
     }, 1000);
@@ -28,7 +27,7 @@ const colorChanger = {
 
   stop() {
     clearInterval(this.intervalId);
-    this.isActive = false;
+    startRef.removeAttribute('disabled');
   },
 };
 
